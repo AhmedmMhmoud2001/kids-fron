@@ -8,7 +8,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://kids.nodeteam.site/api/$1"
+      "destination": "https://lavender-hamster-327895.hostingersite.com/api/$1"
     },
     {
       "source": "/(.*)",

@@ -25,20 +25,10 @@ export const API_BASE_URL = (() => {
   if (typeof window === 'undefined') {
     return `${normalizeBase(PUBLIC_BACKEND_ORIGIN)}/api`;
   }
-  const origin = window.location.origin || '';
-  // Frontend served from same machine as backend
-  if (origin.includes('kids.nodeteam.site')) {
-    return `${normalizeBase(origin)}/api`;
-  }
-  if (origin.includes('tovo-b.developteam.site')) {
-    return `${normalizeBase(PUBLIC_BACKEND_ORIGIN)}/api`;
-  }
-  // Vite dev: relative path hits dev-server proxy
   if (isLocalDevOrigin()) {
     return LOCAL_VITE_BACKEND_PROXY;
   }
-  // Vercel: same-origin /api so rewrites (→ kids.nodeteam.site/api) work
-  return '/api';
+  return `${normalizeBase(PUBLIC_BACKEND_ORIGIN)}/api`;
 })();
 
 /**
@@ -46,11 +36,6 @@ export const API_BASE_URL = (() => {
  */
 export const API_HOST = (() => {
   if (typeof window === 'undefined') {
-    return normalizeBase(PUBLIC_BACKEND_ORIGIN);
-  }
-  const origin = window.location.origin || '';
-  if (origin.includes('kids.nodeteam.site')) return normalizeBase(origin);
-  if (origin.includes('tovo-b.developteam.site')) {
     return normalizeBase(PUBLIC_BACKEND_ORIGIN);
   }
   if (isLocalDevOrigin()) {
