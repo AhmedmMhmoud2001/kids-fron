@@ -270,10 +270,7 @@ export const fetchProducts = async (filters = {}) => {
 
         const url = `${API_BASE_URL}/products${params.toString() ? '?' + params.toString() : ''}`;
         const response = await fetch(url, {
-            cache: 'no-store',
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
+            cache: 'no-store'
         });
         const data = await response.json();
 
