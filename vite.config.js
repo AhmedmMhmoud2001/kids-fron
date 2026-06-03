@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // Proxies browser /api/* to backend during dev (see src/api/config.js).
       '/api': {
-        target: 'https://lavender-hamster-327895.hostingersite.com',
+        target: 'https://back.kidsndco.com',
         changeOrigin: true,
         secure: false
       }

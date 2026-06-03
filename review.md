@@ -41,7 +41,7 @@
 
 - `npm run build` succeeds.
 - `npm run lint` was failing previously due to multiple existing repo-wide issues; it now runs but reports existing errors/warnings across unrelated files.
-- Updated `vite.config.js` dev proxy to route `/api/*` to `https://kids.nodeteam.site` so local dev uses the remote backend.
+- Updated `vite.config.js` dev proxy to route `/api/*` to `https://back.kidsndco.com` so local dev uses the remote backend.
 - Updated Kids home categories section to show **5 per swipe** (Swiper paging) instead of 6.
 - Prevented broken image icon when a category has no `image` URL (keeps the circle background intact).
 - Updated Home2 categories section to show **5 per swipe** (Swiper paging) and prevented broken image icons when `image` is missing.

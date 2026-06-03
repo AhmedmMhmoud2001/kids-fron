@@ -5,9 +5,9 @@
  */
 
 /** Production API host (HTTPS, no trailing slash). Change here if backend moves. */
-export const PUBLIC_BACKEND_ORIGIN = 'https://lavender-hamster-327895.hostingersite.com';
+export const PUBLIC_BACKEND_ORIGIN = 'https://back.kidsndco.com';
 
-const LOCAL_VITE_BACKEND_PROXY = '/api'; // Proxied by vite.config.js → http://localhost:5000
+const LOCAL_VITE_BACKEND_PROXY = '/api'; // Proxied by vite.config.js → https://back.kidsndco.com
 export function isLocalDevOrigin() {
   if (typeof window === 'undefined') return false;
   const o = window.location?.origin || '';
@@ -39,7 +39,7 @@ export const API_HOST = (() => {
     return normalizeBase(PUBLIC_BACKEND_ORIGIN);
   }
   if (isLocalDevOrigin()) {
-    return 'http://localhost:5000';
+    return normalizeBase(PUBLIC_BACKEND_ORIGIN);
   }
   return normalizeBase(PUBLIC_BACKEND_ORIGIN);
 })();
