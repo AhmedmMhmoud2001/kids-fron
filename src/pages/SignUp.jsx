@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { registerUser, verifyEmail, resendVerificationCode, checkEmail } from '../api/auth';
 import { API_BASE_URL } from '../api/config';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useApp();
   const [step, setStep] = useState('register'); // 'register' | 'verify'
   const [formData, setFormData] = useState({
@@ -23,6 +24,27 @@ const SignUp = () => {
   const [resendCooldown, setResendCooldown] = useState(0);
   
   const codeInputRefs = useRef([]);
+
+  // Open verify step when redirected from Sign In (e.g. resend verification)
+  useEffect(() => {
+    const fromSignIn = location.state?.step === 'verify';
+    const emailFromState = location.state?.email;
+    if (fromSignIn && emailFromState) {
+      setStep('verify');
+      setFormData((prev) => ({ ...prev, email: emailFromState }));
+      setResendCooldown(60);
+    }
+  }, [location.state]);
+
+  const goToVerifyStep = () => {
+    setStep('verify');
+    setResendCooldown(60);
+    setTimeout(() => codeInputRefs.current[0]?.focus(), 0);
+  };
+
+  const registrationNeedsVerification = (res) =>
+    res?.data?.requiresVerification === true ||
+    (typeof res?.message === 'string' && /verification code sent/i.test(res.message));
 
   // Resend cooldown timer
   useEffect(() => {
@@ -86,17 +108,17 @@ const SignUp = () => {
     setIsLoading(true);
 
     try {
-      const res = await registerUser(formData);
+      const { firstName, lastName, email, password } = formData;
+      const res = await registerUser({ firstName, lastName, email, password });
 
       if (res.success) {
-        // Check if verification is required
-        if (res.data.requiresVerification) {
-          setStep('verify');
-          setResendCooldown(60);
-        } else if (res.data.user) {
-          // Direct login (verification skipped, token in httpOnly cookie)
+        if (registrationNeedsVerification(res)) {
+          goToVerifyStep();
+        } else if (res.data?.user) {
           login(res.data);
           navigate('/');
+        } else {
+          setError(res.message || 'Registration failed');
         }
       } else {
         setError(res.message || 'Registration failed');
