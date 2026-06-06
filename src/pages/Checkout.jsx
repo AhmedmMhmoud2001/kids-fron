@@ -319,27 +319,6 @@ const Checkout = () => {
                   <input
                     type="radio"
                     name="paymentMethod"
-                    value="CARD"
-                    checked={formData.paymentMethod === 'CARD'}
-                    onChange={handleChange}
-                    className="w-5 h-5 text-blue-500"
-                  />
-                  <div className="flex-1">
-                    <div className="font-semibold">Credit/Debit Card</div>
-                    <div className="text-sm text-gray-600">Pay securely with your card</div>
-                  </div>
-                  <div className="flex gap-2">
-                    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
-                      <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M2 8h20" stroke="currentColor" strokeWidth="1.5" />
-                    </svg>
-                  </div>
-                </label>
-
-                <label className="flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
                     value="COD"
                     checked={formData.paymentMethod === 'COD'}
                     onChange={handleChange}
