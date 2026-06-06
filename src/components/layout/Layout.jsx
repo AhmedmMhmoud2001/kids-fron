@@ -11,8 +11,10 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <Navigation />
+      <div className="sticky top-0 z-50 bg-white">
+        <Header />
+        <Navigation />
+      </div>
       <main className="flex-grow pb-20 lg:pb-0">
         <Outlet />
       </main>

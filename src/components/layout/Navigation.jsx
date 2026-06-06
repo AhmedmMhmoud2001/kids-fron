@@ -11,7 +11,7 @@ import 'swiper/css/navigation';
 const Navigation = () => {
   const location = useLocation();
   const { audience: contextAudience, setAudience } = useApp();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const pageSize = 6;
@@ -60,26 +60,18 @@ const Navigation = () => {
     loadCategories();
   }, [urlAudience, contextAudience]); // Depend on both URL and context audience
 
-  const getColorClasses = (category, isActive) => {
-    if (isActive) {
-      return category.color === 'blue'
-        ? 'text-[#63adfc] border-b-2 border-[#63adfc]'
-        : 'text-[#ff92a5] border-b-2 border-[#ff92a5]';
-    }
-
-    // Default classes (Hover)
-    return category.color === 'blue'
-      ? 'text-gray-700 hover:text-[#63adfc] border-b-2 border-transparent hover:border-[#63adfc]'
-      : 'text-gray-700 hover:text-[#ff92a5] border-b-2 border-transparent hover:border-[#ff92a5]';
-  };
+  const getLinkClasses = () =>
+    `text-[13px] font-semibold tracking-[0.08em] text-gray-900 whitespace-nowrap transition-opacity hover:opacity-60 ${
+      language === 'en' ? 'uppercase' : ''
+    }`;
 
   if (loading && categories.length === 0) {
     return (
-      <nav className="bg-white border-t hidden lg:block">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-row-reverse justify-center gap-8">
+      <nav className="bg-white border-b border-gray-100 hidden lg:block">
+        <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-2">
+          <div className="flex justify-center gap-10 xl:gap-12">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-6 w-20 bg-gray-100 animate-pulse rounded"></div>
+              <div key={i} className="h-4 w-24 bg-gray-100 animate-pulse rounded"></div>
             ))}
           </div>
         </div>
@@ -102,21 +94,21 @@ const Navigation = () => {
     ((document.documentElement.getAttribute('dir') || 'ltr')?.toLowerCase() === 'rtl');
 
   return (
-    <nav className="bg-white border-t hidden lg:block">
-      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
-        <div dir={isRTL ? 'rtl' : 'ltr'} className="py-4 relative">
+    <nav className="bg-white border-b border-gray-100 hidden lg:block">
+      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16">
+        <div dir={isRTL ? 'rtl' : 'ltr'} className="py-2 relative">
           {shouldUseSwiper ? (
             <>
               <button
                 type="button"
-                className={`swiper-nav-btn ${prevClass} absolute left-0 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-7 w-7 items-center justify-center rounded-full bg-white/90 shadow border border-gray-200 text-gray-700 hover:bg-white`}
+                className={`swiper-nav-btn ${prevClass} absolute left-0 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-7 w-7 items-center justify-center text-gray-900 hover:opacity-60`}
                 aria-label="Previous categories"
               >
                 ‹
               </button>
               <button
                 type="button"
-                className={`swiper-nav-btn ${nextClass} absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-7 w-7 items-center justify-center rounded-full bg-white/90 shadow border border-gray-200 text-gray-700 hover:bg-white`}
+                className={`swiper-nav-btn ${nextClass} absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-7 w-7 items-center justify-center text-gray-900 hover:opacity-60`}
                 aria-label="Next categories"
               >
                 ›
@@ -142,24 +134,16 @@ const Navigation = () => {
           >
             {pages.map((page, pageIndex) => (
               <SwiperSlide key={pageIndex}>
-                <ul className="flex items-center justify-center gap-8">
+                <ul className="flex items-center justify-center gap-10 xl:gap-12">
                   {page.map((category) => {
-                    // Determine the effective audience for the link
                     const effectiveAudience = urlAudience || contextAudience;
-
-                    // Include audience in query param for the link
                     const targetPath = `${category.path}?audience=${effectiveAudience}`;
-
-                    // Check if this category is active by comparing pathnames
-                    const isActive = location.pathname === category.path;
 
                     return (
                       <li key={category.id || category.path}>
                         <NavLink
                           to={targetPath}
-                          className={() =>
-                            `font-medium transition-all duration-200 pb-1 whitespace-nowrap ${getColorClasses(category, isActive)}`
-                          }
+                          className={getLinkClasses}
                         >
                           {t(category.name)}
                         </NavLink>

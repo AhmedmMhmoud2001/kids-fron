@@ -10,6 +10,7 @@ import { fetchBestSellers } from '../api/products';
 import { fetchHomeHeroVideo } from '../api/settings';
 import { useApp } from '../context/AppContext';
 import { useLanguage } from '../context/LanguageContext';
+import { applyHome2CategoryImages } from '../utils/homeCategoryImages2';
 
 const Home2 = () => {
   const [categories, setCategories] = useState([]);
@@ -30,7 +31,7 @@ const Home2 = () => {
           fetchBestSellers('NEXT'),
           fetchHomeHeroVideo()
         ]);
-        setCategories(catsRes.data || []);
+        setCategories(applyHome2CategoryImages(catsRes.data || []));
         setBestSellers(bestRes.data || []);
         setHeroVideo(videoUrl);
       } catch (err) {
@@ -43,7 +44,7 @@ const Home2 = () => {
   }, [setAudience]);
 
   return (
-    <div className="container mx-auto">
+    <div>
       {/* Hero Section - Full Width with Overlay Text */}
       <section className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden">
         {/* Hero Image */}
@@ -79,7 +80,7 @@ const Home2 = () => {
         </div>
       </section>
 
-
+      <div className="container mx-auto">
       {/* Categories Section */}
       <CategoriesSectionHome2
         categories={categories}
@@ -95,6 +96,7 @@ const Home2 = () => {
 
       {/* Features Section */}
       <FeaturesSection />
+      </div>
     </div>
   );
 };

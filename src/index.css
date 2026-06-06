@@ -103,6 +103,31 @@
   }
 }
 
+.img-sharp {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  -webkit-font-smoothing: subpixel-antialiased;
+  filter: contrast(1.07) saturate(1.06);
+}
+
+/* Home hero swiper */
+.home-hero-swiper .swiper-pagination {
+  bottom: 20px !important;
+}
+
+.home-hero-swiper .swiper-pagination-bullet {
+  background: #9ca3af !important;
+  opacity: 1 !important;
+  width: 8px;
+  height: 8px;
+}
+
+.home-hero-swiper .swiper-pagination-bullet-active {
+  background: #111827 !important;
+  width: 24px;
+  border-radius: 4px;
+}
+
 /* Swiper Customization */
 .best-sellers-swiper .swiper-button-next,
 .best-sellers-swiper .swiper-button-prev {

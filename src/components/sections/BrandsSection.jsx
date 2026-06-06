@@ -46,12 +46,11 @@ const BrandsSection = () => {
           pauseOnMouseEnter: true,
         }}
         breakpoints={{
-          0: { slidesPerView: 1, spaceBetween: 16 },      // small mobile
-          480: { slidesPerView: 2, spaceBetween: 18 },   // large mobile
-          640: { slidesPerView: 2, spaceBetween: 20 },   // sm
-          768: { slidesPerView: 3, spaceBetween: 22 },   // md
-          1024: { slidesPerView: 4, spaceBetween: 24 },  // lg
-          1280: { slidesPerView: 5, spaceBetween: 24 },  // xl
+          0: { slidesPerView: 3, spaceBetween: 12 },
+          640: { slidesPerView: 3, spaceBetween: 16 },
+          768: { slidesPerView: 4, spaceBetween: 20 },
+          1024: { slidesPerView: 5, spaceBetween: 24 },
+          1280: { slidesPerView: 6, spaceBetween: 24 },
         }}
         className="!pb-2"
       >
@@ -61,11 +60,11 @@ const BrandsSection = () => {
             className="!h-auto flex items-center justify-center"
           >
             {/* Fixed container so images align */}
-            <div className="h-16 w-full flex items-center justify-center cursor-pointer group px-4">
+            <div className="h-14 sm:h-16 w-full flex items-center justify-center cursor-pointer group px-1 sm:px-3">
               <img
                 src={item.image || null}
                 alt={item.name}
-                className="h-full w-full p-3 object-contain filter grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                className="h-full w-full p-1 sm:p-3 object-contain filter grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
                 loading="lazy"
               />
             </div>

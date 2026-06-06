@@ -28,7 +28,8 @@ export const translations = {
     homeHero: {
       shopSmart: "Shop Smart",
       shopNow: "SHOP NOW",
-      shop: "Shop"
+      shop: "Shop",
+      newCollection: "New Collection 2026"
     },
     features: {
       fastShippingTitle: "Fast Shipping",
@@ -156,7 +157,8 @@ export const translations = {
     homeHero: {
       shopSmart: "تسوق بذكاء",
       shopNow: "تسوق الآن",
-      shop: "تسوق"
+      shop: "تسوق",
+      newCollection: "مجموعة جديدة 2026"
     },
     features: {
       fastShippingTitle: "شحن سريع",

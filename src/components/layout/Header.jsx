@@ -1,10 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useApp } from "../../context/AppContext";
-import logo from "../../assets/logo.webp";
-import logo1 from "../../assets/logo1.webp";
 import MobileMenu from "./MobileMenu";
 import SearchModal from "../search/SearchModal";
+import logo from "../../assets/logo.webp";
 import { NavLink } from "react-router-dom";
 import { fetchCategories } from "../../api/categories";
 import { fetchTopHeaderOffers } from "../../api/settings";
@@ -92,12 +91,24 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const getBrandLogoClass = (isActive) =>
+    `flex h-8 sm:h-9 items-center outline-none ring-0 transition-opacity duration-200 ${
+      isActive ? "opacity-100" : "opacity-30 hover:opacity-45"
+    }`;
+
+  const getBrandNextClass = (isActive) =>
+    `relative flex h-8 sm:h-9 items-center pb-px text-lg sm:text-[1.35rem] font-semibold leading-none tracking-[0.2em] outline-none ring-0 transition-all duration-200 ${
+      isActive
+        ? "text-gray-900 opacity-100 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-gray-900"
+        : "text-gray-500 opacity-40 hover:opacity-55"
+    }`;
+
   return (
     <>
       {/* Top Banner */}
-      <div className="bg-blue-300 text-white py-2 text-sm px-4 sm:px-6 md:px-10 lg:px-16 ">
-        <div className="container mx-auto flex items-center justify-between gap-2">
-          <div className="flex-1 min-w-0">
+      <div className="bg-gray-900 text-white text-sm">
+        <div className="container mx-auto relative flex items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 py-2.5">
+          <div className="w-full max-w-3xl min-w-0 px-10">
             {offers.length > 0 ? (
               <div dir={language === 'ar' ? 'rtl' : 'ltr'}>
               <Swiper
@@ -131,7 +142,7 @@ const Header = () => {
           </div>
           <button
             onClick={toggleLanguage}
-            className="text-xs px-2 py-1 rounded bg-white/20 hover:bg-white/30 transition-colors"
+            className="absolute right-4 sm:right-6 md:right-10 lg:right-16 text-xs font-medium min-w-[30px] h-7 px-1.5 flex items-center justify-center rounded-sm bg-white/25 hover:bg-white/35 transition-colors"
             aria-label={language === "en" ? t("common.switchToArabic") : t("common.switchToEnglish")}
           >
             {language === "en" ? t("common.switchToArabic") : t("common.switchToEnglish")}
@@ -140,106 +151,65 @@ const Header = () => {
       </div>
 
       {/* Main Header */}
-      <div className="w-full bg-white ">
-      <header className="bg-white shadow-sm container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 sticky top-0 z-50 lg:static lg:top-auto lg:z-auto transition-colors duration-300">
-        <div className="">
-          {/* Top Row */}
-          <div className="flex items-center justify-between py-4 ">
+      <header className="bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16">
+          <div className="flex items-center justify-between py-2">
             {/* Mobile Menu Button */}
             <button
               onClick={() => setShowMobileMenu(true)}
-              className="lg:hidden p-2 rounded-lg transition-colors hover:bg-gray-100"
+              className="lg:hidden p-2 -ml-2 transition-colors hover:bg-gray-50 rounded-md"
               aria-label={t("header.openMenu")}
             >
-              <Menu className="w-6 h-6 text-gray-700" />
+              <Menu className="w-6 h-6 text-gray-900" strokeWidth={1.5} />
             </button>
 
-            {/* Logo */}
-            <div className="flex items-center gap-2 lg:gap-4">
-
-              {/* <NavLink to="/" className="text-xl font-bold  lg:hidden">
-                <img src={logo} alt="logo" className="h-8 lg:h-auto" />
-              </NavLink> */}
-
-
-              <NavLink
-                to="/"
-                end
-                className={({ isActive }) =>
-                  `lg:flex items-end justify-center
-     h-12 w-24 relative
-     transition-colors 
-     after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px]
-     after:transition-all after:duration-300 after:ease-out
-     ${isActive
-                    ? "text-gray-900 font-semibold after:w-full after:opacity-100  after:bg-gray-900"
-                    : "text-gray-400 hover:text-gray-600 after:w-0 after:opacity-0 opacity-50 hover:after:w-full hover:after:opacity-100 hover:after:bg-gray-600"
-                  }`
-                }
-              >
-                <img src={logo1} alt="logo1" className="h-8 w-24 object-contain" />
+            {/* Brand tabs */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              <NavLink to="/" end className={({ isActive }) => getBrandLogoClass(isActive)}>
+                <img
+                  src={logo}
+                  alt="Kids & Co."
+                  className="h-6 sm:h-7 w-auto object-contain mix-blend-screen outline-none"
+                />
               </NavLink>
 
-              <NavLink
-                to="/home2"
-                className={({ isActive }) => {
-                  const isRTL =
-                    typeof window !== 'undefined' &&
-                    ((document.documentElement.getAttribute('dir') || 'ltr')?.toLowerCase() === 'rtl');
-                  const borderPart = isRTL ? 'border-r-2 border-gray-200' : 'border-l-2 border-gray-200';
-                  const afterCore = isRTL
-                    ? "after:content-[''] after:absolute after:right-0 after:bottom-0 after:h-[2px] after:transition-all after:duration-300 after:ease-out"
-                    : "after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:transition-all after:duration-300 after:ease-out";
-                  const afterPos = isRTL ? 'after:right-0' : 'after:left-0';
-                  return `lg:flex items-end justify-center
-     h-12 w-24 relative
-     transition-colors text-2xl
-     ${afterCore} ${afterPos}
-     ${borderPart}
-     ${isActive
-                    ? "text-gray-900 font-semibold after:w-full after:opacity-100 after:bg-gray-900"
-                    : "text-gray-400 hover:text-gray-600 after:w-0 after:opacity-0 hover:after:w-full hover:after:opacity-100 hover:after:bg-gray-600"
-                  }`;
-                }}
-              >
+              <span className="h-6 sm:h-7 w-px bg-gray-300" aria-hidden="true" />
+
+              <NavLink to="/home2" className={({ isActive }) => getBrandNextClass(isActive)}>
                 NEXT
               </NavLink>
-
             </div>
 
             {/* Right Icons */}
-            <div className="hidden lg:flex items-center gap-1 sm:gap-2">
-              {/* Search Icon */}
+            <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={() => setShowSearchModal(true)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors group"
+                className="p-2 transition-opacity hover:opacity-60"
                 aria-label={t("header.search")}
               >
-                <Search className="w-5 h-5 text-gray-700 group-hover:text-blue-600 transition-colors" />
+                <Search className="w-5 h-5 text-gray-900" strokeWidth={1.5} />
               </button>
 
-              {/* Favorites Icon */}
               <Link
                 to="/favorites"
-                className="p-2 hover:bg-gray-100 rounded-full relative group transition-colors"
+                className="p-2 relative transition-opacity hover:opacity-60"
                 aria-label={t("header.favorites")}
               >
-                <Heart className="w-5 h-5 text-gray-700 group-hover:text-red-500 transition-colors" />
+                <Heart className="w-5 h-5 text-gray-900" strokeWidth={1.5} />
                 {favoritesCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute top-0.5 right-0.5 bg-gray-900 text-white text-[10px] rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-0.5">
                     {favoritesCount}
                   </span>
                 )}
               </Link>
 
-              {/* User Icon with Dropdown */}
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2 transition-opacity hover:opacity-60"
                   aria-label={t("header.userMenu")}
                 >
-                  <User className="w-5 h-5 text-gray-700" />
+                  <User className="w-5 h-5 text-gray-900" strokeWidth={1.5} />
                 </button>
 
                 {/* User Dropdown Menu */}
@@ -376,15 +346,14 @@ const Header = () => {
                 )}
               </div>
 
-              {/* Cart Icon */}
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="p-2 hover:bg-gray-100 rounded-full relative transition-colors group"
+                className="p-2 relative transition-opacity hover:opacity-60"
                 aria-label={t("header.shoppingCart")}
               >
-                <ShoppingBag className="w-5 h-5 text-gray-700 group-hover:text-blue-600 transition-colors" />
+                <ShoppingBag className="w-5 h-5 text-gray-900" strokeWidth={1.5} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute top-0.5 right-0.5 bg-gray-900 text-white text-[10px] rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-0.5">
                     {cartCount}
                   </span>
                 )}
@@ -393,21 +362,6 @@ const Header = () => {
           </div>
         </div>
       </header>
-
-      </div>
-      
-      {/* Logo Center Row - Hidden on mobile, animated on desktop */}
-      <div
-        className={`hidden lg:block text-center  transition-all duration-300 overflow-hidden sticky top-0 z-40 bg-white shadow-sm  px-4 sm:px-6 md:px-10 lg:px-20 py-5`}
-      >
-        <Link to="/" className="inline-block">
-          <img
-            src={logo}
-            alt="logo"
-            className="transition-transform duration-300"
-          />
-        </Link>
-      </div>
 
       {/* Mobile Menu */}
       <MobileMenu

@@ -1,6 +1,7 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { useLanguage } from '../../context/LanguageContext';
+import LogoText from './LogoText';
 
 const MobileMenu = ({ isOpen, onClose, categories = [] }) => {
   const location = useLocation();
@@ -32,12 +33,7 @@ const MobileMenu = ({ isOpen, onClose, categories = [] }) => {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
-            <h2 className="text-xl font-bold">
-              <span className="text-black">Kids</span>
-              <span className="text-blue-500">&</span>
-              <span className="text-pink-500">Co</span>
-              <span className="text-black">.</span>
-            </h2>
+            <LogoText />
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full"

@@ -8,13 +8,10 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-/**
- * Categories section component
- */
 const CategoriesSection = ({
   categories = [],
   limit = null,
-  gridCols = 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6',
+  gridCols = 'grid-cols-2 sm:grid-cols-3',
   className = '',
   pageSize = 6,
   showArrows = true,
@@ -26,27 +23,6 @@ const CategoriesSection = ({
   const id = useId().replace(/:/g, '');
   const prevClass = `cats-prev-${id}`;
   const nextClass = `cats-next-${id}`;
-  const getCategoryClasses = (category) => {
-    const slug = String(category.slug || '').toLowerCase();
-    const name = String(t(category.name) || '').toLowerCase();
-    const isBoy = name.includes('boy');
-    const isGirl = name.includes('girl');
-    const isBoyBySlug = slug.includes('boy');
-    const isGirlBySlug = slug.includes('girl');
-
-    const baseClasses = "text-gray-700 bg-gray-50 border-2 border-gray-100/50 transition-all duration-700 shadow-sm group-hover:shadow-md";
-
-    if (isBoy || isBoyBySlug) {
-      return `${baseClasses} hover:bg-blue-50 hover:border-blue-200`;
-    }
-    if (isGirl || isGirlBySlug) {
-      return `${baseClasses} hover:bg-pink-50 hover:border-pink-200`;
-    }
-
-    // Categories: smooth gradient on hover
-    return `${baseClasses} hover:bg-gradient-to-br hover:from-pink-100/20 hover:to-blue-100/20 hover:border-blue-200`;
-  };
-
 
   const categoriesToShow = limit ? categories.slice(0, limit) : categories;
   const total = categoriesToShow.length;
@@ -65,20 +41,20 @@ const CategoriesSection = ({
     ((document.documentElement.getAttribute('dir') || 'ltr')?.toLowerCase() === 'rtl');
 
   return (
-    <Section padding="py-4 lg:py-5" className={className}>
+    <Section padding="py-8 lg:py-12" className={className}>
       <div dir={isRTL ? 'rtl' : 'ltr'} className="relative">
         {showArrows && shouldUseSwiper ? (
           <>
             <button
               type="button"
-              className={`swiper-nav-btn ${prevClass} absolute -left-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow border border-gray-200 text-gray-700 hover:bg-white`}
+              className={`swiper-nav-btn ${prevClass} absolute -left-2 lg:-left-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-8 w-8 items-center justify-center text-gray-900 hover:opacity-60`}
               aria-label="Previous categories"
             >
               ‹
             </button>
             <button
               type="button"
-              className={`swiper-nav-btn ${nextClass} absolute -right-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow border border-gray-200 text-gray-700 hover:bg-white`}
+              className={`swiper-nav-btn ${nextClass} absolute -right-2 lg:-right-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex h-8 w-8 items-center justify-center text-gray-900 hover:opacity-60`}
               aria-label="Next categories"
             >
               ›
@@ -104,32 +80,36 @@ const CategoriesSection = ({
         >
           {pages.map((page, pageIndex) => (
             <SwiperSlide key={pageIndex}>
-              <div className={`grid ${gridCols} gap-4 lg:gap-6`}>
+              <div className={`grid ${gridCols} gap-4 md:gap-6 lg:gap-8`}>
                 {page.map((category, idx) => {
-                  const categoryPath = category.slug || '';
                   const key = category.id || category.slug || `${pageIndex}-${idx}`;
 
                   return (
                     <Link
                       key={key}
-                      to={`/category/${category.slug || categoryPath}?audience=${audience}`}
-                      className="group text-center hover:text-gray-500"
+                      to={`/category/${category.slug}?audience=${audience}`}
+                      className="group block text-center"
                     >
-                      <div className={`aspect-square  rounded-full overflow-hidden mb-3  shadow-md ${getCategoryClasses(category)}`}>
+                      <div className="aspect-square overflow-hidden rounded-lg bg-[#f3efe8] mb-3">
                         {category.image ? (
                           <img
                             src={category.image}
                             alt={t(category.name)}
-                            className="relative w-full h-full object-cover object-center z-10"
-                            loading="lazy"
+                            className="img-sharp h-full w-full object-cover object-center"
+                            loading={pageIndex === 0 && idx < 6 ? 'eager' : 'lazy'}
+                            decoding="sync"
+                            fetchPriority={pageIndex === 0 && idx < 3 ? 'high' : 'auto'}
                             onError={(e) => {
                               e.target.style.display = 'none';
-                              e.target.parentElement.classList.add('bg-gray-300');
                             }}
                           />
-                        ) : null}
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-sm text-gray-400">
+                            {t(category.name)}
+                          </div>
+                        )}
                       </div>
-                      <h3 className="font-medium text-xs sm:text-sm md:text-base transition-colors">
+                      <h3 className="text-sm sm:text-base font-medium text-gray-900">
                         {t(category.name)}
                       </h3>
                     </Link>
@@ -145,4 +125,3 @@ const CategoriesSection = ({
 };
 
 export default CategoriesSection;
-
