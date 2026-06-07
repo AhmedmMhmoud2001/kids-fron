@@ -1,3 +1,4 @@
+import { resolveMediaUrl } from './mediaUrl';
 import boyImage from '../assets/categoryhome2/ChatGPT Image Jun 6, 2026, 05_10_48 PM.png';
 import girlImage from '../assets/categoryhome2/ChatGPT Image Jun 6, 2026, 05_10_54 PM.png';
 import babyBoyImage from '../assets/categoryhome2/ChatGPT Image Jun 6, 2026, 05_11_04 PM.png';
@@ -41,7 +42,13 @@ const getCategoryImageFromApi = (category) =>
 
 export const applyHome2CategoryImages = (categories = []) =>
   categories.map((category) => {
-    if (getCategoryImageFromApi(category)) return category;
+    const apiImage = getCategoryImageFromApi(category);
+    if (apiImage) {
+      return {
+        ...category,
+        image: resolveMediaUrl(apiImage),
+      };
+    }
 
     const localImage = getHome2CategoryImage(category.slug, category.name);
     if (!localImage) return category;

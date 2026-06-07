@@ -169,7 +169,7 @@ const Header = () => {
                 <img
                   src={logo}
                   alt="Kids & Co."
-                  className="h-6 sm:h-7 w-auto object-contain mix-blend-screen outline-none"
+                  className="h-7 sm:h-8 w-auto object-contain outline-none"
                 />
               </NavLink>
 

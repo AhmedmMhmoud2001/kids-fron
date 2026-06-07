@@ -1,4 +1,36 @@
 import { API_BASE_URL } from './config';
+import { resolveMediaUrl } from '../utils/mediaUrl';
+
+const normalizeCategory = (category) => {
+    if (!category) return category;
+
+    const rawImage = category.image || category.imageUrl;
+    if (!rawImage) return category;
+
+    const image = resolveMediaUrl(rawImage);
+    return {
+        ...category,
+        image,
+        ...(category.imageUrl ? { imageUrl: image } : {}),
+    };
+};
+
+const normalizeCategoriesResponse = (data) => {
+    if (!data) return data;
+
+    if (Array.isArray(data)) {
+        return data.map(normalizeCategory);
+    }
+
+    if (Array.isArray(data.data)) {
+        return {
+            ...data,
+            data: data.data.map(normalizeCategory),
+        };
+    }
+
+    return data;
+};
 
 // Get all categories with optional audience filter
 export const fetchCategories = async (audience = null) => {
@@ -14,7 +46,7 @@ export const fetchCategories = async (audience = null) => {
             throw new Error(data.message || 'Failed to fetch categories');
         }
         
-        return data;
+        return normalizeCategoriesResponse(data);
     } catch (error) {
         console.error('Error fetching categories:', error);
         throw error;
@@ -31,7 +63,7 @@ export const fetchCategoryById = async (id) => {
             throw new Error(data.message || 'Failed to fetch category');
         }
         
-        return data;
+        return normalizeCategory(data);
     } catch (error) {
         console.error('Error fetching category:', error);
         throw error;
