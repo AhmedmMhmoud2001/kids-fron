@@ -36,8 +36,13 @@ export const getHomeCategoryImage = (slug, name = '') => {
   return null;
 };
 
+const getCategoryImageFromApi = (category) =>
+  String(category?.image || category?.imageUrl || '').trim();
+
 export const applyHomeCategoryImages = (categories = []) =>
   categories.map((category) => {
+    if (getCategoryImageFromApi(category)) return category;
+
     const localImage = getHomeCategoryImage(category.slug, category.name);
     if (!localImage) return category;
 

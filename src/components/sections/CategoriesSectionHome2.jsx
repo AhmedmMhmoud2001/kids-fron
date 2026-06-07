@@ -32,14 +32,12 @@ const CategoriesSectionHome2 = ({
                 to={`/category/${category.slug}?audience=${audience}`}
                 className="group flex flex-col items-center justify-center text-center"
               >
-                <div className="relative w-full aspect-square flex items-end justify-center mb-2 overflow-hidden">
-                  <div className="absolute inset-x-0 bottom-0 w-full aspect-square rounded-full bg-[#f3f4f6] group-hover:bg-[#e5e7eb] transition-colors duration-300 z-0" />
-
+                <div className="aspect-square w-full overflow-hidden rounded-lg bg-[#f3efe8] mb-2">
                   {category.image ? (
                     <img
                       src={category.image}
                       alt={t(category.name)}
-                      className="absolute left-1/2 bottom-0 -translate-x-1/2 w-auto h-[92%] max-h-full object-contain object-bottom z-10 transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.04] group-hover:drop-shadow-[0_12px_16px_rgba(0,0,0,0.15)]"
+                      className="img-sharp h-full w-full object-cover object-center"
                       loading="lazy"
                     />
                   ) : null}
